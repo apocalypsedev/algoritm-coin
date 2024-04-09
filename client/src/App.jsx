@@ -1,12 +1,12 @@
 import React from 'react'
-import { Home } from './components'
-
+import { HomePage } from './components'
 
 const App = () => {
+  
   return (
-    <div>
-      <Home/>
-    </div>
+    <>
+      <HomePage/> 
+    </>
   )
 }
 

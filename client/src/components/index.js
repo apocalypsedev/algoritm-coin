@@ -1,4 +1,8 @@
-export { default as Home} from "./home/Home.jsx"
-export { default as Navbar} from "./navbar/Navbar.jsx"
-export { default as Saidbar} from "./saidbar/Saidbar.jsx"
-export { default as Main} from "./main/Main.jsx"
+export { default as HomePage} from './home/home';
+export { default as  Navbar} from './home/navbar/navbar';
+export { default as Main} from './home/main/main';
+export { default as Saidbar} from './home/saidbar/saidbar';
+export { default as AllInformation} from './pages/all-information/all-information';
+export { default as AddMentor } from './pages/add-mentor/add-mentor';
+export { default as UpdateMentor } from './pages/update-mentor/update-mentor';
+export { default as MyAccount } from './pages/my-account/my-account';
