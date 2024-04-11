@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Saidbar = () => {
   return (
-    <div className="col-span-1 row-span-6 bg-white rounded-xl p-4">
+    <div className="col-span-1 row-span-8 bg-white rounded-xl p-4">
       <div className="w-[80px] h-[80px]">
         <img src={Brend} alt="brend-logo" className="w-full h-full" />
       </div>
