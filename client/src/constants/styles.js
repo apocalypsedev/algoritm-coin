@@ -1,6 +1,6 @@
 export const styles = {
-  gridCard: "row-span-2 col-span-1 rounded-md bg-white",
-  gridY: "row-span-6 col-span-2 rounded-md bg-white",
+  gridCard: "col-span-1 rounded-md bg-white",
+  gridY: " col-span-2 rounded-md",
   flexX: "flex items-center",
 };
 

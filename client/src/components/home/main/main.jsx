@@ -3,7 +3,7 @@ import { Routes, Route} from 'react-router-dom';
 
 const Main = () => {
   return (
-    <div className="row-span-7 col-span-4 ">
+    <div className="row-span-7 col-span-4 overflow-auto">
       <Routes>
         <Route path="/all-information" element={<AllInformation/>}/>
         <Route path="/add-mentor" element={<AddMentor/>}/>
