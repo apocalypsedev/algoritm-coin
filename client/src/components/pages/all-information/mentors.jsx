@@ -19,6 +19,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import { useState } from "react";
  
 const TABS = [
   {
@@ -86,7 +87,39 @@ const TABLE_ROWS = [
 ];
  
 export function Mentors() {
-  return (
+
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [ searchTerm, setSearchTerm  ] = useState("");
+
+  const [ itemsPerPage ] = useState(5)
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem * searchTerm;
+  const currentItems = TABLE_ROWS.slice(indexOfFirstItem, indexOfLastItem);
+  const nPages = Math.ceil(TABLE_ROWS.length / itemsPerPage);
+
+  const goToNextPage = () => {
+    if(currentPage !== nPages) 
+       setCurrentPage(currentPage + 1);
+  }
+  const goToPrevPage = () => {
+    if(currentPage !== 1) 
+       setCurrentPage(currentPage + 1);
+  }
+
+  const filteredItems = currentItems.filter((item) => 
+    Object.values(item).some(
+      (value) => 
+        typeof value === "string" &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value)
+  };
+
+   return (
     <Card className="h-[100vh] w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none ">
         <div className="mb-8 flex items-center justify-between gap-8">
@@ -118,9 +151,11 @@ export function Mentors() {
             </TabsHeader>
           </Tabs>
           <div className="w-full md:w-72">
-            <Input
+            
+            <Input 
               label="Search"
               icon={<IoIosSearch className="h-5 w-5" />}
+              onChange={handleSearch}
             />
           </div>
         </div>
@@ -128,7 +163,7 @@ export function Mentors() {
       <CardBody className="overflow-x-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
-            <tr>
+            <tr className="">
               {TABLE_HEAD.map((head) => (
                 <th
                   key={head}
@@ -146,9 +181,9 @@ export function Mentors() {
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
+            {filteredItems.map(
               ({ img, name, email, job, org, online, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+                const isLast = index === filteredItems.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
@@ -157,7 +192,7 @@ export function Mentors() {
                   <tr key={name}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="sm" />
+                        <Avatar src={img} alt={name} size="20px" />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"
@@ -232,10 +267,12 @@ export function Mentors() {
           Page 1 of 10
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm"
+                  onClick={goToPrevPage}>
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm"
+                  onClick={goToNextPage}>
             Next
           </Button>
         </div>
