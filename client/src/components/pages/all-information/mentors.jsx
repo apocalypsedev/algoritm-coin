@@ -1,8 +1,7 @@
-
-import { LuPencil } from "react-icons/lu";
+import { useCallback, useState } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
-
+import TableDataMap from './table-data';
 import {
   Card,
   CardHeader,
@@ -19,7 +18,6 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import { useState } from "react";
  
 const TABS = [
   {
@@ -27,13 +25,17 @@ const TABS = [
     value: "all",
   },
   {
-    label: "Monitored",
-    value: "monitored",
+    label: "Web",
+    value: "web",
   },
   {
-    label: "Unmonitored",
-    value: "unmonitored",
+    label: "En",
+    value: "en",
   },
+  {
+    label: "Ru",
+    value: "ru",
+  }
 ];
  
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
@@ -67,59 +69,181 @@ const TABLE_ROWS = [
     date: "19/09/17",
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    name: "Soli",
+    email: "john@creative-tim.com",
+    job: "Manager",
+    org: "Organization",
     online: true,
-    date: "24/12/08",
+    date: "23/04/18",
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    org: "Executive",
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    name: "Vali",
+    email: "alexa@creative-tim.com",
+    job: "Programator",
+    org: "Developer",
     online: false,
-    date: "04/10/21",
+    date: "23/04/18",
   },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    name: "Ali",
+    email: "laurent@creative-tim.com",
+    job: "Executive",
+    org: "Projects",
+    online: false,
+    date: "19/09/17",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    name: "John Michael",
+    email: "john@creative-tim.com",
+    job: "Manager",
+    org: "Organization",
+    online: true,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    name: "Alexa Liras",
+    email: "alexa@creative-tim.com",
+    job: "Programator",
+    org: "Developer",
+    online: false,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    name: "Laurent Perrier",
+    email: "laurent@creative-tim.com",
+    job: "Executive",
+    org: "Projects",
+    online: false,
+    date: "19/09/17",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    name: "Soli",
+    email: "john@creative-tim.com",
+    job: "Manager",
+    org: "Organization",
+    online: true,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    name: "Vali",
+    email: "alexa@creative-tim.com",
+    job: "Programator",
+    org: "Developer",
+    online: false,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    name: "Ali",
+    email: "laurent@creative-tim.com",
+    job: "Executive",
+    org: "Projects",
+    online: false,
+    date: "19/09/17",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    name: "John Michael",
+    email: "john@creative-tim.com",
+    job: "Manager",
+    org: "Organization",
+    online: true,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    name: "Alexa Liras",
+    email: "alexa@creative-tim.com",
+    job: "Programator",
+    org: "Developer",
+    online: false,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    name: "Laurent Perrier",
+    email: "laurent@creative-tim.com",
+    job: "Executive",
+    org: "Projects",
+    online: false,
+    date: "19/09/17",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    name: "Soli",
+    email: "john@creative-tim.com",
+    job: "Manager",
+    org: "Organization",
+    online: true,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    name: "Vali",
+    email: "alexa@creative-tim.com",
+    job: "Programator",
+    org: "Developer",
+    online: false,
+    date: "23/04/18",
+  },
+  {
+    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    name: "Ali",
+    email: "laurent@creative-tim.com",
+    job: "Executive",
+    org: "Projects",
+    online: false,
+    date: "19/09/17",
+  },
+  
 ];
  
 export function Mentors() {
 
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [ searchTerm, setSearchTerm  ] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [ itemsPerPage ] = useState(5)
+  const [itemsPerPage] = useState(5);
 
   const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem * searchTerm;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = TABLE_ROWS.slice(indexOfFirstItem, indexOfLastItem);
   const nPages = Math.ceil(TABLE_ROWS.length / itemsPerPage);
-
+  
   const goToNextPage = () => {
     if(currentPage !== nPages) 
-       setCurrentPage(currentPage + 1);
-  }
-  const goToPrevPage = () => {
-    if(currentPage !== 1) 
-       setCurrentPage(currentPage + 1);
+        setCurrentPage(currentPage + 1)
   }
 
-  const filteredItems = currentItems.filter((item) => 
+  const goToPrevPage = () => {
+    if(currentPage !== 1) 
+        setCurrentPage(currentPage - 1)
+  }
+
+  const filteredItems = currentItems.filter((item) =>
     Object.values(item).some(
-      (value) => 
+      (value) =>
         typeof value === "string" &&
         value.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value)
-  };
+  const handleSearch = useCallback((event) => {
+    setTimeout(
+      setSearchTerm(event.target.value), 500
+    )
+  }, [searchTerm]);
 
-   return (
+
+  return (
     <Card className="h-[100vh] w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none ">
         <div className="mb-8 flex items-center justify-between gap-8">
@@ -132,9 +256,6 @@ export function Mentors() {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              view all
-            </Button>
             <Button className="flex items-center gap-3" size="sm">
               <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add mentor
             </Button>
@@ -151,8 +272,7 @@ export function Mentors() {
             </TabsHeader>
           </Tabs>
           <div className="w-full md:w-72">
-            
-            <Input 
+            <Input
               label="Search"
               icon={<IoIosSearch className="h-5 w-5" />}
               onChange={handleSearch}
@@ -163,7 +283,7 @@ export function Mentors() {
       <CardBody className="overflow-x-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
-            <tr className="">
+            <tr>
               {TABLE_HEAD.map((head) => (
                 <th
                   key={head}
@@ -181,101 +301,29 @@ export function Mentors() {
             </tr>
           </thead>
           <tbody>
-            {filteredItems.map(
-              ({ img, name, email, job, org, online, date }, index) => {
-                const isLast = index === filteredItems.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                  <tr key={name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="20px" />
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {email}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {job}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <LuPencil className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
+              <TableDataMap data={filteredItems}/>
           </tbody>
         </table>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {nPages}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm"
-                  onClick={goToPrevPage}>
+          <Button 
+            variant="outlined" 
+            size="sm" 
+            onClick={goToPrevPage}
+          >
             Previous
           </Button>
-          <Button variant="outlined" size="sm"
-                  onClick={goToNextPage}>
+          <Button variant="outlined" size="sm" 
+          onClick={goToNextPage}>
             Next
           </Button>
         </div>
+
+
       </CardFooter>
     </Card>
   );

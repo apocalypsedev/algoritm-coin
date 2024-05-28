@@ -1,12 +1,15 @@
 import axios from "axios";
-import { getItem } from 
+import { getItem } from "../helpers/cookie-storage";
 
 axios.defaults.baseURL = 'http://localhost:5050/api'
+
 axios.interceptors.request.use(config => {
     const token = getItem('token')
-    const authrization = token ? `Token ${token}` : ""
-    config.headers.Authorization = authrization
+    const authorization = token ? `Token ${token}` : '' 
+    config.headers.Authorization = authorization
     return config
+
+    // console.log(authorization)
 })
 
 export default axios

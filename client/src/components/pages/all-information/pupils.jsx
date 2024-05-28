@@ -1,8 +1,7 @@
 
+import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
-import { FaUserPlus } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
-
 import {
   Card,
   CardHeader,
@@ -26,13 +25,18 @@ const TABS = [
     value: "all",
   },
   {
-    label: "Monitored",
-    value: "monitored",
+    label: "Web",
+    value: "web",
   },
   {
-    label: "Unmonitored",
-    value: "unmonitored",
+    label: "En",
+    value: "en",
   },
+  {
+    label: "Ru",
+    value: "ru",
+  },
+  
 ];
  
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
@@ -67,25 +71,59 @@ const TABLE_ROWS = [
  
  
 export function Pupils() {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [itemsPerPage] = useState(5);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = TABLE_ROWS.slice(indexOfFirstItem, indexOfLastItem);
+  const nPages = Math.ceil(TABLE_ROWS.length / itemsPerPage);
+
+  const filteredItems = currentItems.filter(item => {
+    Object.values(item).some( 
+      (value) => 
+        typeof value === "string" && 
+        value.toLowerCase().includes(searchTerm.toLowerCase())  
+    )
+  })
+
+
+  const goToNextPage = () => {
+    if(currentPage !== nPages) 
+      setCurrentPage(currentPage + 1);
+    
+  }
+
+  const goToPrevPage = () => {
+    if(currentPage !== 1) 
+      setCurrentPage(currentPage - 1);
+    
+  }
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value)
+  }
+
   return (
     <Card className="h-[100vh] w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none ">
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Memtors list
+              Pupils list
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all mentors
+              See information about all pupils
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              view all
-            </Button>
-            <Button className="flex items-center gap-3" size="sm">
-              <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add mentor
-            </Button>
+          <div className="w-full md:w-72">
+            <Input
+              label="Search"
+              icon={<IoIosSearch className="h-5 w-5" />}
+              onChange={handleSearch}
+            />
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -98,12 +136,7 @@ export function Pupils() {
               ))}
             </TabsHeader>
           </Tabs>
-          <div className="w-full md:w-72">
-            <Input
-              label="Search"
-              icon={<IoIosSearch className="h-5 w-5" />}
-            />
-          </div>
+          
         </div>
       </CardHeader>
       <CardBody className="overflow-x-scroll px-0">
@@ -127,9 +160,9 @@ export function Pupils() {
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
-              ({ img, name, email, job, org, online, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+            {filteredItems.map(
+              ({ name, job, date }, index) => {
+                const isLast = index === filteredItems.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
@@ -147,13 +180,7 @@ export function Pupils() {
                           >
                             {name}
                           </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {email}
-                          </Typography>
+                          
                         </div>
                       </div>
                     </td>
@@ -166,13 +193,7 @@ export function Pupils() {
                         >
                           {job}
                         </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
+                        
                       </div>
                     </td>
                     <td className={classes}>
@@ -210,13 +231,13 @@ export function Pupils() {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {nPages}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm" onClick={goToPrevPage}>
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm" onClick={goToNextPage}>
             Next
           </Button>
         </div>

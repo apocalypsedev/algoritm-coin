@@ -4,6 +4,7 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
+import { memo } from "react";
 import Chart from "react-apexcharts";
 import { SlDocs } from "react-icons/sl";
 // If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
@@ -99,7 +100,7 @@ const chartConfig = {
   },
 };
  
-export default function DiagramLine() {
+const DiagramLine = () => {
   return (
     <Card>
       <CardHeader
@@ -131,3 +132,5 @@ export default function DiagramLine() {
     </Card>
   );
 }
+
+export default memo(DiagramLine)

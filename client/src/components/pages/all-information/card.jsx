@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { styles } from '../../../constants/styles'
 
 const Card = ({ item }) => {
@@ -16,4 +16,4 @@ const Card = ({ item }) => {
   )
 }
 
-export default Card
+export default memo(Card);
